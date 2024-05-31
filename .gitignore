@@ -1,18 +1,412 @@
-# Build and Release Folders
-bin-debug/
-bin-release/
-[Oo]bj/
-[Bb]in/
+Window.ScreenGui = "killmenow"
 
-# Other files and folders
-.settings/
+--make a velocity toggle which does its absolute best to disable all movement
+local veltoggle = Instance.new("BodyVelocity")
+veltoggle.P=math.huge
+veltoggle.Velocity=Vector3.new()
+veltoggle.MaxForce=Vector3.new(math.huge,math.huge,math.huge)
 
-# Executables
-*.swf
-*.air
-*.ipa
-*.apk
+--make some basic helper functions
+local isrunning = true
+local unloads = {
+}
+uilib:OnUnload(function()
+	isrunning = false
+	for i,v in pairs(unloads) do
+		task.spawn(v)
+	end
+end)
 
-# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
-# should NOT be excluded as they contain compiler settings and other important
-# information for Eclipse / Flash Builder.
+local function flatten(vec)
+	return Vector3.new(vec.X,0,vec.Z)
+end
+local function remove(t1,find)
+	if not table.find(t1,find) then return end
+	return table.remove(t1,table.find(t1,find))
+end
+local function merge(t1,...)
+	for i,t2 in pairs({...}) do
+		table.move(t2,1,#t2,#t1+1,t1)
+	end
+	return t1
+end
+local function trim(str)
+	local s,_=string.gsub(str, '^%s*(.-)%s*$', '%1')
+	return s
+end
+local function truelen(t)
+	local c = 0
+	for _,_ in pairs(t) do
+		c+=1
+	end
+	return c
+end
+
+local function getServers(id)
+	return game:GetService("HttpService"):JSONDecode(request({Url=`https://games.roblox.com/v1/games/{id}/servers/0?sortOrder=2&excludeFullGames=true&limit=100`}).Body)
+end
+
+local function getMover(part)
+	for i,v in pairs(part:GetDescendants()) do
+		if not v:IsA("BasePart") then continue end
+		local ocf = v.CFrame
+		v.CFrame=CFrame.new()
+		if v.CFrame==CFrame.new() then
+			v.CFrame=ocf
+			return v
+		end
+	end
+end
+local function getMovePart():BasePart
+	if not root then return nil end
+	if not (hum and root and hum.SeatPart and hum.SeatPart.Parent) then return root end
+	return getMover(hum.SeatPart.Parent) or root
+end
+local function getMovementRaycastParams()
+	local rp = RaycastParams.new()
+	rp.IgnoreWater=true
+	rp.FilterType=Enum.RaycastFilterType.Exclude
+	local filt={workspace:FindFirstChild("Items"),hum and hum.SeatPart and hum.SeatPart.Parent,workspace:FindFirstChild("Critters")}
+	for i,v in pairs(game:GetService("Players"):GetPlayers()) do
+		table.insert(filt,v.Character)
+	end
+	for i,v in pairs(workspace:GetChildren()) do
+		if v.Name=="RainPart" then
+			table.insert(filt,v)
+		end
+	end
+	rp.FilterDescendantsInstances=filt
+	return rp
+end
+
+local function moveTo(pos:CFrame|Vector3)
+	if not getMovePart() then return end
+	if typeof(pos)=="Vector3" then pos = CFrame.new(pos) end
+	local move=getMovePart()
+	if move==root then
+		move.CFrame = pos
+	else
+		local dif = (move.CFrame.Position-root.CFrame.Position)
+		move.CFrame = pos+dif
+	end
+end
+--gold
+
+local newvels:{BodyVelocity} = {}
+local ogvels = {}
+local ogparts = {}
+task.spawn(function()
+	while isrunning do rs.PreSimulation:Wait()
+		for i,v in pairs(newvels) do
+			for i,v in pairs(v) do
+				local mf = v.MaxForce
+				v.Parent.Velocity=Vector3.new(mf.X==math.huge and 0 or v.Parent.Velocity.X,mf.Y==math.huge and 0 or v.Parent.Velocity.Y,mf.Z==math.huge and 0 or v.Parent.Velocity.Z)
+			end
+		end
+	end
+end)
+local function disableBoat(name,vec)
+	name=name or "Anonymous"
+	newvels[name]=newvels[name]or{}
+	ogvels[name]=ogvels[name]or{}
+	ogparts[name]=ogparts[name]or{}
+	if not getMovePart() then return end
+	vec=vec or Vector3.new(1,1,1)
+	local force = Vector3.new(if vec.X==1 then math.huge else 0,if vec.Y==1 then math.huge else 0,if vec.Z==1 then math.huge else 0)
+	for i,v in pairs(char:GetDescendants()) do
+		if ogvels[name][v] or ogparts[name][v] then continue end
+		if v~=veltoggle and (v:IsA("BodyVelocity") or v:IsA("BodyPosition")) then
+			ogvels[name][v]=v.MaxForce
+			v.MaxForce=Vector3.new()
+		elseif v:IsA("BasePart") then
+			ogparts[name][v]={v.CanCollide,v.Massless}
+			v.CanCollide=false
+			v.Massless=true
+			local newveltoggle = veltoggle:Clone()
+			newveltoggle.Parent=v
+			newveltoggle.MaxForce=force
+			table.insert(newvels[name],newveltoggle)
+		end
+	end
+	for i,v in pairs(hum and hum.SeatPart and hum.SeatPart.Parent and hum.SeatPart.Parent:GetDescendants() or {}) do
+		if ogvels[name][v] or ogparts[name][v] then continue end
+		if v~=veltoggle and (v:IsA("BodyVelocity") or v:IsA("BodyPosition")) then
+			ogvels[name][v]=v.MaxForce
+			v.MaxForce=Vector3.new()
+		elseif v:IsA("BasePart") then
+			ogparts[name][v]={v.CanCollide,v.Massless}
+			v.CanCollide=false
+			v.Massless=true
+			local newveltoggle = veltoggle:Clone()
+			newveltoggle.Parent=v
+			newveltoggle.MaxForce=force
+			table.insert(newvels[name],newveltoggle)
+		end
+	end
+end
+local function enableBoat(name)
+	name=name or "Anonymous"
+	newvels[name]=newvels[name]or{}
+	ogvels[name]=ogvels[name]or{}
+	ogparts[name]=ogparts[name]or{}
+	for i,v in pairs(newvels[name]) do
+		v:Destroy()
+		remove(newvels[name],v)
+	end
+	for i,v in pairs(char:GetDescendants()) do
+		if v:IsA("BodyVelocity") then
+			v:Destroy()
+		end
+	end
+	for i,v in pairs(ogvels[name]) do
+		remove(ogvels[name],v)
+		i.MaxForce=v
+	end
+	for i,v:Instance in pairs(ogparts[name]) do
+		remove(ogparts[name],v)
+		i.CanCollide=v[1]
+		i.Massless=v[2]
+	end
+	newvels[name]=nil
+	ogvels[name]=nil
+	ogparts[name]=nil
+end
+table.insert(unloads,function()
+	for i,v in pairs(newvels) do
+		enableBoat(i)
+	end
+end)
+--hit
+
+local function teleportStepToward(pos,rate,step,height)
+	if not root then return end
+	local posflat=flatten(pos)
+	local cposflat=flatten(root.Position)
+	local dir = (posflat-cposflat).Unit
+	local dist = (posflat-cposflat).Magnitude
+	if dir.X~=dir.X then
+		dir=Vector3.new()
+	end
+	cposflat+=dir*math.clamp((step or rs.PreSimulation:Wait())*rate,0,dist)
+	local ray = workspace:Raycast(cposflat+Vector3.new(0,root.Position.Y+25,0),Vector3.new(0,-10000,0),getMovementRaycastParams())
+	if ray then
+		moveTo(ray.Position+Vector3.new(0,height or 3.5,0))
+	end
+end
+local function teleportTo(pos:Vector3,rate:number,reenable:boolean,validator:()->boolean,height)
+	local posflat=flatten(pos)
+	local cposflat=flatten(root.Position)
+	local dir = (posflat-cposflat).Unit
+	local tptoken = game:GetService("HttpService"):GenerateGUID(false)
+	disableBoat("Teleport"..tptoken)
+	while getMovePart() and validator() do
+		local step = rate*rs.PreSimulation:Wait()
+		if (cposflat-posflat).Magnitude<step then
+			moveTo(pos)
+			break
+		else
+			cposflat+=dir*step
+			local ray = workspace:Raycast(cposflat+Vector3.new(0,1000,0),Vector3.new(0,-2000,0),getMovementRaycastParams())
+			if ray then
+				moveTo(ray.Position+Vector3.new(0,height or 5,0))
+			end
+		end
+	end
+	enableBoat("Teleport"..tptoken)
+end
+--auto eat
+local function getSlot(name)
+	if inventorygui:FindFirstChild(name) and not inventorygui[name]:IsA("UILayout") then
+		return inventorygui[name].LayoutOrder
+	end
+end
+local function getCount(name)
+	if inventorygui:FindFirstChild(name) and not inventorygui[name]:IsA("UILayout") and inventorygui[name]:FindFirstChild("QuantityText",true) then
+		return tonumber(inventorygui[name]:FindFirstChild("QuantityText",true).Text) or 0
+	end
+	return 0
+end
+local function getItemId(name)
+	return itemids[name]
+end
+
+local function teamcheck(plr2)
+	return (plr.Neutral or plr.Team.Name=="NoTribe" or plr.Team~=plr2.Team)
+end
+--start of packet functions --most of these functions are technically slower because they add an extra function call but it doesn't really matter
+local function hit(parts)
+	local new = {}
+
+	for _,v in next, parts do
+		local item = v
+		if v:IsA("BasePart") then
+			item = v:GetAttribute("EntityID")
+		end
+		table.insert(new, item)
+	end
+	packets.SwingTool.send(new)
+end
+local function useSlot(slot)
+	packets.UseBagItem.send(slot)
+end
+local pickupbuf = buffer.create(2)
+buffer.writeu8(pickupbuf,0,packetsenumerated.Pickup)
+buffer.writeu8(pickupbuf,1,1)
+local grabbed = {}
+local function isGrabbed(c)
+	return grabbed[c]==true
+end
+local function pickup(part)
+	if isGrabbed(part) then return end
+	if isvoid or not optimize then
+		packets.Pickup.send(part:GetAttribute("EntityID"))
+	else
+		bytenet:FireServer(pickupbuf,{part:GetAttribute("EntityID")})
+	end
+	task.spawn(function()
+		grabbed[part]=true
+		task.wait(plr:GetNetworkPing()+1)
+		grabbed[part]=nil
+	end)
+end
+local function plant(box,plant)
+	if not isvoid then
+		packets.InteractStructure.send({entityID=box:GetAttribute("EntityID"),itemID=plant})
+	else
+		packets.InteractStructure.send(box,plant)
+	end
+end
+local function grab(item)
+	packets.ForceInteract.send(item:GetAttribute("EntityID"))
+end
+local function manipulate(item,func)
+	grab(item)
+	rs.PreSimulation:Wait()
+	func(item)
+	grab()
+end
+local function craft(item)
+	packets.CraftItem.send(item)
+end
+local function touch(p1,p2) --the checks are to try to avoid crashing
+	firetouchinterest(p1,p2,1)
+	firetouchinterest(p1,p2,0)
+end
+local function place(name,rot,pos)
+	if not isvoid then
+		packets.PlaceStructure.send({
+			buildingName=name,
+			yrot=rot,
+			vec=pos,
+			isMobile=false,
+		})
+	else
+		packets.PlaceStructure.send(
+			pos,
+			name,
+			rot,
+			false
+		)
+	end
+end
+local pressbuf = buffer.create(4)
+buffer.writeu8(pressbuf,0,packetsenumerated.InteractStructure)
+buffer.writeu8(pressbuf,1,1)
+buffer.writeu16(pressbuf,2,if not isvoid then getItemId("Gold") else 0)
+local function press(press)
+	if isvoid then return plant(press,"Gold") end
+	if not optimize then return plant(press:GetAttribute("EntityID"),getItemId("Gold")) end
+	bytenet:FireServer(pressbuf,{press:GetAttribute("EntityID")})
+end
+
+
+--make categories
+local combat = Window:AddTab("Goldfarm")
+
+--init theme manager (mostly copied from example lmao)
+
+local uisettings = Window:AddTab("UI Settings")
+local menu = uisettings:AddLeftGroupbox('Menu')
+menu:AddButton('Unload', function() uilib:Unload() end)
+menu:AddLabel('Menu bind'):AddKeyPicker('MenuKeybind', { Default = 'RShift', NoUI = true, Text = 'Menu keybind' })
+themelib:SetLibrary(uilib)
+themelib:ApplyToTab(uisettings)
+--make globally used cheat vars
+
+local birds = {}
+if game.ReplicatedFirst:FindFirstChild("Animals") then
+	for i,v:Instance in pairs(workspace.Critters:GetChildren()) do
+		if v.Name=="Bird" then
+			table.insert(birds,v)
+			local con
+			con = v.AncestryChanged:Connect(function(c,p)
+				if p==nil then
+					remove(birds,v)
+					con:Disconnect()
+				end
+			end)
+		end
+	end
+    --auto coinpress
+	workspace.Critters.ChildAdded:Connect(function(v:Instance)
+		if v.Name=="Bird" and not table.find(birds,v) then
+			table.insert(birds,v)
+			local con
+			con = v.AncestryChanged:Connect(function(c,p)
+				if p==nil then
+					remove(birds,v)
+					con:Disconnect()
+				end
+			end)
+		end
+	end)
+end
+
+for i,v:Instance in pairs(workspace.Critters:GetChildren()) do
+	if v.Name=="Bird" then
+		table.insert(birds,v)
+		local con
+		con = v.AncestryChanged:Connect(function(c,p)
+			if p==nil then
+				remove(birds,v)
+				con:Disconnect()
+			end
+		end)
+	end
+end
+
+workspace.Critters.ChildAdded:Connect(function(v:Instance)
+	if v.Name=="Bird" and not table.find(birds,v) then
+		table.insert(birds,v)
+		local con
+		con = v.AncestryChanged:Connect(function(c,p)
+			if p==nil then
+				remove(birds,v)
+				con:Disconnect()
+			end
+		end)
+	end
+end)
+
+local resources = {}
+local function addResource(v:Instance)
+	if v:IsA("Model") then
+		table.insert(resources,v)
+		local gone = false
+		v.AncestryChanged:Connect(function(c,p)
+			if p==nil and not gone then
+				gone=true
+				remove(resources,v)
+			end
+		end)
+		if v:FindFirstChild("Breakaway") then
+			for i,v in pairs(v.Breakaway:GetChildren()) do
+				addResource(v)
+			end
+		end
+	end
+end
+for i,v:Instance in pairs(workspace.Resources:GetChildren()) do
+	addResource(v)
+end
+workspace.Resources.ChildAdded:Connect(addResource)
