@@ -18,13 +18,14 @@ local OrionLib = {
 	Flags = {},
 	Themes = {
         Default = {
-			Main = Color3.fromRGB(25, 25, 25),
-			Second = Color3.fromRGB(32, 32, 32),
-			Stroke = Color3.fromRGB(60, 60, 60),
-			Divider = Color3.fromRGB(60, 60, 60),
-			Text = Color3.fromRGB(240, 240, 240),
-			TextDark = Color3.fromRGB(150, 150, 150)
+            Main = Color3.fromRGB(0, 0, 0),
+			Second = Color3.fromRGB(0, 0, 0),
+			Stroke = Color3.fromRGB(255,255, 255),
+            Divider = Color3.fromRGB(255, 255, 255)
+			Text = Color3.fromRGB(255, 255, 255),
+			TextDark = Color3.fromRGB(255, 255, 255)
 		},
+
         Nightmare = {
             Main = Color3.fromRGB(0, 0, 0),
 			Second = Color3.fromRGB(0, 0, 0),
@@ -657,13 +658,13 @@ function OrionLib:MakeWindow(WindowConfig)
 			ScreenGui.Name = "Show"
 			local QuickCapture = Instance.new("TextButton", ScreenGui)
 			QuickCapture.Name = "UI"
-			QuickCapture.BackgroundColor3 = Color3.fromRGB(85, 0, 255)
+			QuickCapture.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
 			QuickCapture.BackgroundTransparency = 0.14
 			QuickCapture.Position = UDim2.new(0.465, 0, 0, 40)
 			QuickCapture.Size = UDim2.new(0, 100, 0, 33)
 			QuickCapture.Font = Enum.Font.SourceSansBold
-			QuickCapture.Text = "O/C"
-			QuickCapture.TextColor3 = Color3.fromRGB(255, 0, 0)
+			QuickCapture.Text = "SATURN HUB"
+			QuickCapture.TextColor3 = Color3.fromRGB(255, 255, 255)
 			QuickCapture.TextSize = 20.000
 			QuickCapture.Style = Enum.ButtonStyle.RobloxButtonDefault
 			QuickCapture.TextWrapped = true
