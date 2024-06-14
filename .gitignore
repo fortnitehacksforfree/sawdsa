@@ -128,11 +128,11 @@ function Library:Create(Class, Properties)
     for Property, Value in next, Properties do
 	
         _Instance[Property] = Value;
-	if Property == "BorderSizePixel" then
-	_Instance.BorderSizePixel = 0
-end
-    end;
 
+    end;
+	if Class == "Frame" then
+		_Instance.BorderSizePixel = 0
+		end
     return _Instance;
 end;
 
@@ -487,7 +487,7 @@ do
 
         local Highlight = Library:Create('Frame', {
             BackgroundColor3 = Library.AccentColor;
-            BorderSizePixel = 0;
+           -- BorderSizePixel = 0;
             Size = UDim2.new(1, 0, 0, 2);
             ZIndex = 17;
             Parent = PickerFrameInner;
@@ -547,7 +547,7 @@ do
 
         local HueSelectorInner = Library:Create('Frame', {
             BackgroundColor3 = Color3.new(1, 1, 1);
-            BorderSizePixel = 0;
+            --BorderSizePixel = 0;
             Size = UDim2.new(1, 0, 1, 0);
             ZIndex = 18;
             Parent = HueSelectorOuter;
@@ -2031,7 +2031,7 @@ do
 
         local HideBorderRight = Library:Create('Frame', {
             BackgroundColor3 = Library.AccentColor;
-            BorderSizePixel = 0;
+           -- BorderSizePixel = 0;
             Position = UDim2.new(1, 0, 0, 0);
             Size = UDim2.new(0, 1, 1, 0);
             ZIndex = 8;
@@ -2294,7 +2294,7 @@ do
             BackgroundColor3 = Library.MainColor;
             BorderColor3 = Library.OutlineColor;
             BorderMode = Enum.BorderMode.Inset;
-            BorderSizePixel = 0;
+          --  BorderSizePixel = 0;
             Size = UDim2.new(1, 0, 1, 0);
             ZIndex = 21;
             Parent = ListOuter;
@@ -2723,7 +2723,7 @@ do
 
     local InnerFrame = Library:Create('Frame', {
         BackgroundColor3 = Color3.new(1, 1, 1);
-        BorderSizePixel = 0;
+       -- BorderSizePixel = 0;
         Position = UDim2.new(0, 1, 0, 1);
         Size = UDim2.new(1, -2, 1, -2);
         ZIndex = 202;
@@ -2789,7 +2789,7 @@ do
 
     local ColorFrame = Library:Create('Frame', {
         BackgroundColor3 = Library.AccentColor;
-        BorderSizePixel = 0;
+       -- BorderSizePixel = 0;
         Size = UDim2.new(1, 0, 0, 2);
         ZIndex = 102;
         Parent = KeybindInner;
@@ -2875,7 +2875,7 @@ function Library:Notify(Text, Time)
 
     local InnerFrame = Library:Create('Frame', {
         BackgroundColor3 = Color3.new(1, 1, 1);
-        BorderSizePixel = 0;
+       -- BorderSizePixel = 0;
         Position = UDim2.new(0, 1, 0, 1);
         Size = UDim2.new(1, -2, 1, -2);
         ZIndex = 102;
@@ -2912,7 +2912,7 @@ function Library:Notify(Text, Time)
 
     local LeftColor = Library:Create('Frame', {
         BackgroundColor3 = Library.AccentColor;
-        BorderSizePixel = 0;
+       -- BorderSizePixel = 0;
         Position = UDim2.new(0, -1, 0, -1);
         Size = UDim2.new(0, 3, 1, 2);
         ZIndex = 104;
@@ -2966,7 +2966,7 @@ function Library:CreateWindow(...)
     local Outer = Library:Create('Frame', {
         AnchorPoint = Config.AnchorPoint,
         BackgroundColor3 = Color3.new(0, 0, 0);
-        BorderSizePixel = 0;
+       -- BorderSizePixel = 0;
         Position = Config.Position,
         Size = Config.Size,
         Visible = false;
@@ -3093,7 +3093,7 @@ function Library:CreateWindow(...)
 
         local Blocker = Library:Create('Frame', {
             BackgroundColor3 = Library.MainColor;
-            BorderSizePixel = 0;
+            --BorderSizePixel = 0;
             Position = UDim2.new(0, 0, 1, 0);
             Size = UDim2.new(1, 0, 0, 1);
             BackgroundTransparency = 1;
@@ -3219,7 +3219,7 @@ function Library:CreateWindow(...)
 
             local Highlight = Library:Create('Frame', {
                 BackgroundColor3 = Library.AccentColor;
-                BorderSizePixel = 0;
+               -- BorderSizePixel = 0;
                 Size = UDim2.new(1, 0, 0, 2);
                 ZIndex = 5;
                 Parent = BoxInner;
@@ -3319,7 +3319,7 @@ function Library:CreateWindow(...)
 
             local Highlight = Library:Create('Frame', {
                 BackgroundColor3 = Library.AccentColor;
-                BorderSizePixel = 0;
+               -- BorderSizePixel = 0;
                 Size = UDim2.new(1, 0, 0, 2);
                 ZIndex = 10;
                 Parent = BoxInner;
@@ -3370,7 +3370,7 @@ function Library:CreateWindow(...)
 
                 local Block = Library:Create('Frame', {
                     BackgroundColor3 = Library.BackgroundColor;
-                    BorderSizePixel = 0;
+                  --  BorderSizePixel = 0;
                     Position = UDim2.new(0, 0, 1, 0);
                     Size = UDim2.new(1, 0, 0, 1);
                     Visible = false;
