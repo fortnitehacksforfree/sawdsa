@@ -140,7 +140,7 @@ function Fun.Create(title)
 
     cover.Name = "cover"
     cover.Parent = mainSide
-    cover.BackgroundColor3 = Color3.fromRGB(37, 37, 44)
+    cover.BackgroundColor3 = Color3.fromRGB(171,101,101)
     cover.BorderSizePixel = 0
     cover.Position = UDim2.new(0.949999988, 0, 0, 0)
     cover.Size = UDim2.new(0, 9, 0, 396)
@@ -255,7 +255,7 @@ function Fun.Create(title)
 
             sectionFrame.Name = "sectionFrame"
             sectionFrame.Parent = newPage
-            sectionFrame.BackgroundColor3 = Color3.fromRGB(37, 37, 44)
+            sectionFrame.BackgroundColor3 = Color3.fromRGB(171,101,101)
             sectionFrame.Position = UDim2.new(0, 0, -8.009863e-08, 0)
             sectionFrame.Size = UDim2.new(0.9559322, 0, 0, 36)
             sectionFrame.ClipsDescendants = true
@@ -269,7 +269,7 @@ function Fun.Create(title)
 
             sectionFrameHead.Name = "sectionFrameHead"
             sectionFrameHead.Parent = sectionFrame
-            sectionFrameHead.BackgroundColor3 = Color3.fromRGB(37, 37, 44)
+            sectionFrameHead.BackgroundColor3 = Color3.fromRGB(171,101,101)
             sectionFrameHead.Position = UDim2.new(0, 0, -8.009863e-08, 0)
             sectionFrameHead.Size = UDim2.new(1, 0, 0, 36)
 
@@ -277,7 +277,7 @@ function Fun.Create(title)
 
             sectionCircle.Name = "sectionCircle"
             sectionCircle.Parent = sectionFrameHead
-            sectionCircle.BackgroundColor3 = Color3.fromRGB(82, 82, 98)
+            sectionCircle.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
             sectionCircle.Position = UDim2.new(0.0354609936, 0, 0.388888896, 0)
             sectionCircle.Size = UDim2.new(0, 7, 0, 7)
 
@@ -291,11 +291,11 @@ function Fun.Create(title)
             TextLabel.Size = UDim2.new(0, 173, 0, 22)
             TextLabel.Font = Enum.Font.Gotham
             TextLabel.Text = sectionName
-            TextLabel.TextColor3 = Color3.fromRGB(82, 82, 98)
+            TextLabel.TextColor3 = Color3.fromRGB(0, 0, 0)
             TextLabel.TextSize = 14.000
             TextLabel.TextXAlignment = Enum.TextXAlignment.Left
 
-            
+            --toggle
 
             closeSection.Name = "closeSection"
             closeSection.Parent = sectionFrameHead
@@ -304,7 +304,7 @@ function Fun.Create(title)
             closeSection.Size = UDim2.new(0, 25, 0, 25)
             closeSection.ZIndex = 2
             closeSection.Image = "rbxassetid://3926305904"
-            closeSection.ImageColor3 = Color3.fromRGB(82, 82, 98)
+            closeSection.ImageColor3 = Color3.fromRGB(0, 0, 0)
             closeSection.ImageRectOffset = Vector2.new(404, 284)
             closeSection.ImageRectSize = Vector2.new(36, 36)
             closeSection.MouseButton1Click:Connect(function()
@@ -313,13 +313,13 @@ function Fun.Create(title)
                     sectionFrame:TweenSize(UDim2.new(0.956, 0,0, 36), "In", "Linear", 0.10)
                     game.TweenService:Create(closeSection, TweenInfo.new(0.10, Enum.EasingStyle.Quad, Enum.EasingDirection.In),{
                         Rotation = 0,
-                        ImageColor3 = Color3.fromRGB(82, 82, 98)
+                        ImageColor3 = Color3.fromRGB(0, 0, 0)
                     }):Play()
                     game.TweenService:Create(sectionCircle, TweenInfo.new(0.10, Enum.EasingStyle.Quad, Enum.EasingDirection.In),{
-                        BackgroundColor3 = Color3.fromRGB(82, 82, 98)
+                        BackgroundColor3 = Color3.fromRGB(0, 0, 0)
                     }):Play()
                     game.TweenService:Create(TextLabel, TweenInfo.new(0.10, Enum.EasingStyle.Quad, Enum.EasingDirection.In),{
-                        TextColor3 = Color3.fromRGB(82, 82, 98)
+                        TextColor3 = Color3.fromRGB(0, 0, 0)
                     }):Play()
                     wait(0.10)
                     UpdateSize()
@@ -463,20 +463,20 @@ function Fun.Create(title)
 
                 toggleFrame.Name = "toggleFrame"
                 toggleFrame.Parent = sectionFrame
-                toggleFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                toggleFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
                 toggleFrame.BackgroundTransparency = 1.000
                 toggleFrame.Position = UDim2.new(0.0354609936, 0, 0.344827592, 0)
                 toggleFrame.Size = UDim2.new(0, 262, 0, 25)
-
+--textbox
                 checkBox.Name = "checkBox"
                 checkBox.Parent = toggleFrame
-                checkBox.BackgroundColor3 = Color3.fromRGB(47, 47, 56)
+                checkBox.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
                 checkBox.BackgroundTransparency = 1.000
                 checkBox.Position = UDim2.new(-0.0381679386, 0, 0.0263157934, 0)
                 checkBox.Size = UDim2.new(0, 25, 0, 25)
                 checkBox.ZIndex = 2
                 checkBox.Image = "rbxassetid://3926311105"
-                checkBox.ImageColor3 = Color3.fromRGB(62, 62, 74)
+                checkBox.ImageColor3 = Color3.fromRGB(0, 0, 0)
                 checkBox.ImageRectOffset = Vector2.new(940, 784)
                 checkBox.ImageRectSize = Vector2.new(48, 48)
 
@@ -488,7 +488,7 @@ function Fun.Create(title)
 
                 checkBoxInfo.Name = "checkBoxInfo"
                 checkBoxInfo.Parent = toggleFrame
-                checkBoxInfo.BackgroundColor3 = Color3.fromRGB(47, 47, 56)
+                checkBoxInfo.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
                 checkBoxInfo.BackgroundTransparency = 1.000
                 checkBoxInfo.Position = UDim2.new(0.106870227, 0, -0.157894731, 0)
                 checkBoxInfo.Size = UDim2.new(0, 200, 0, 19)
@@ -573,10 +573,10 @@ function Fun.Create(title)
                     local UIListLayout = Instance.new("UIListLayout")
                     local TextBox = Instance.new("TextBox")
                     local UICorner = Instance.new("UICorner")
-
+--dropdown
                     textBoxFrame.Name = "textBoxFrame"
                     textBoxFrame.Parent = sectionFrame
-                    textBoxFrame.BackgroundColor3 = Color3.fromRGB(43, 43, 52)
+                    textBoxFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
                     textBoxFrame.BackgroundTransparency = 1.000
                     textBoxFrame.Position = UDim2.new(0.0354609936, 0, 0.344827592, 0)
                     textBoxFrame.Size = UDim2.new(0, 262, 0, 28)
@@ -589,7 +589,7 @@ function Fun.Create(title)
                     UIListLayout.Padding = UDim.new(0, 3)
 
                     TextBox.Parent = textBoxFrame
-                    TextBox.BackgroundColor3 = Color3.fromRGB(43, 43, 52)
+                    TextBox.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
                     TextBox.Position = UDim2.new(0, 0, 0.106060609, 0)
                     TextBox.Size = UDim2.new(0, 262, 0, 26)
                     TextBox.ClearTextOnFocus = false
@@ -626,7 +626,7 @@ function Fun.Create(title)
 
                     local sliderfunc = {}
 
-
+--section
                     local sliderFrame = Instance.new("Frame")
                     local sliderIinfo = Instance.new("TextLabel")
                     local sliderBtn = Instance.new("TextButton")
@@ -660,7 +660,7 @@ function Fun.Create(title)
 
                     sliderBtn.Name = "sliderBtn"
                     sliderBtn.Parent = sliderFrame
-                    sliderBtn.BackgroundColor3 = Color3.fromRGB(47, 47, 56)
+                    sliderBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
                     sliderBtn.BorderSizePixel = 0
                     sliderBtn.Position = UDim2.new(0, 0, 0.616923094, 0)
                     sliderBtn.Size = UDim2.new(0, 262, 0, 9)
@@ -868,7 +868,7 @@ function Fun.Create(title)
 
                     keybindFrame.Name = "keybindFrame"
                     keybindFrame.Parent = sectionFrame
-                    keybindFrame.BackgroundColor3 = Color3.fromRGB(43, 43, 52)
+                    keybindFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
                     keybindFrame.BackgroundTransparency = 1.000
                     keybindFrame.Position = UDim2.new(0.0354609936, 0, 0.344827592, 0)
                     keybindFrame.Size = UDim2.new(0, 262, 0, 33)
@@ -881,7 +881,7 @@ function Fun.Create(title)
 
                     keybindBtn.Name = "keybindBtn"
                     keybindBtn.Parent = keybindFrame
-                    keybindBtn.BackgroundColor3 = Color3.fromRGB(43, 43, 52)
+                    keybindBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
                     keybindBtn.Position = UDim2.new(0, 0, 0.106060609, 0)
                     keybindBtn.Size = UDim2.new(0, 107, 0, 26)
                     keybindBtn.AutoButtonColor = false
@@ -941,19 +941,19 @@ function Fun.Create(title)
 
                     dropdownFrame.Name = "dropdownFrame"
                     dropdownFrame.Parent = sectionFrame
-                    dropdownFrame.BackgroundColor3 = Color3.fromRGB(48, 48, 58)
+                    dropdownFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
                     dropdownFrame.ClipsDescendants = true
                     dropdownFrame.Position = UDim2.new(0.0354609936, 0, 0.495833337, 0)
                     dropdownFrame.Size = UDim2.new(0, 262, 0, 28)
 
                     dropdownFrameHeader.Name = "dropdownFrameHeader"
                     dropdownFrameHeader.Parent = dropdownFrame
-                    dropdownFrameHeader.BackgroundColor3 = Color3.fromRGB(23,137,145)
+                    dropdownFrameHeader.BackgroundColor3 = Color3.fromRGB(0,0,0)
                     dropdownFrameHeader.Size = UDim2.new(0, 262, 0, 28)
 
                     UICorner.CornerRadius = UDim.new(0, 5)
                     UICorner.Parent = dropdownFrameHeader
-
+--button
                     dropdowninfo.Name = "dropdowninfo"
                     dropdowninfo.Parent = dropdownFrameHeader
                     dropdowninfo.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -1047,7 +1047,7 @@ function Fun.Create(title)
                             DropYSize = DropYSize + 33
                             optionButton.Name = "optionButton"
                             optionButton.Parent = dropdownButton
-                            optionButton.BackgroundColor3 = Color3.fromRGB(23,137,145)
+                            optionButton.BackgroundColor3 = Color3.fromRGB(0,0,0)
                             optionButton.BorderSizePixel = 0
                             optionButton.Position = UDim2.new(0.0667938963, 0, -0.418119699, 0)
                             optionButton.Size = UDim2.new(0, 251, 0, 28)
